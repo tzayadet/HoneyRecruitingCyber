@@ -1,76 +1,84 @@
-# HoneyRecruiting Cyber Assessment Lab
+<p align="center">
+  <img src="https://img.shields.io/badge/CYBERSECURITY-HONEYRECRUITING-101010?style=for-the-badge&labelColor=050805&color=00FF41" alt="HoneyRecruiting Cyber"/>
+  <img src="https://img.shields.io/badge/FLASK-PYTHON-101010?style=for-the-badge&logo=flask&logoColor=00FF41" alt="Flask"/>
+</p>
+
+# HoneyRecruiting Cyber
+
+Laboratorio experimental que explora la evaluación técnica de perfiles de ciberseguridad mediante conversaciones guiadas, bots heurísticos y análisis orientativo de términos técnicos.
+
+<p align="center">
+  <a href="https://tzayadet.github.io/HoneyRecruitingCyber/"><strong>PROJECT SHOWCASE ↗</strong></a> ·
+  <a href="https://github.com/tzayadet/HoneyRecruitingCyber"><strong>SOURCE CODE</strong></a>
+</p>
 
 [![GitHub Pages](https://github.com/tzayadet/HoneyRecruitingCyber/actions/workflows/static.yml/badge.svg)](https://github.com/tzayadet/HoneyRecruitingCyber/actions/workflows/static.yml)
 
-**Repository:** HoneyRecruitingCyber
+> Pages publica una ficha estática del proyecto. La aplicación Flask requiere un backend Python y una base de datos; no se ejecuta en GitHub Pages.
 
-Prototipo de laboratorio para explorar evaluación técnica de conocimientos de ciberseguridad mediante una interfaz conversacional, bots basados en reglas, detección de términos y puntuación orientativa.
+## What it does
 
-**Página pública del proyecto:** https://tzayadet.github.io/HoneyRecruitingCyber/  
-Esta página de GitHub Pages es una ficha de presentación estática. La aplicación Flask requiere ejecución de backend independiente y no funciona dentro de GitHub Pages.
+- Interfaz conversacional para explorar perfiles técnicos.
+- Bots basados en reglas y respuestas heurísticas.
+- Clasificación orientativa mediante palabras clave.
+- Historial de conversación asociado a sesiones.
+- Persistencia con Flask-SQLAlchemy.
+- Dashboard analítico con autenticación HTTP Basic.
 
-## Qué incluye
+## Run locally
 
-- Aplicación web Flask con sesiones anónimas.
-- Persistencia mediante Flask-SQLAlchemy.
-- Bots con respuestas heurísticas.
-- Clasificación orientativa basada en palabras clave.
-- Historial de conversación por sesión.
-- Dashboard analítico protegido mediante autenticación HTTP Basic.
-
-## Requisitos
-
-- Python 3.11+
-- PostgreSQL en despliegue compartido, o SQLite para desarrollo local.
-
-## Instalación local
+**Requirements:** Python 3.11+.
 
 ```bash
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# Linux/macOS: source .venv/bin/activate
+# Windows
+.venv\Scripts\activate
+# Linux / macOS
+source .venv/bin/activate
+
 pip install .
 python main.py
 ```
 
-La aplicación se inicia en `http://127.0.0.1:5000`.
+La aplicación de desarrollo se inicia en `http://127.0.0.1:5000`. Para despliegues compartidos se contempla PostgreSQL; SQLite puede utilizarse en desarrollo.
 
-## Configuración
+## Configuration
 
-Define estas variables antes de un despliegue:
+Configura las variables de entorno antes de desplegar:
 
-- `SESSION_SECRET`: secreto aleatorio persistente para firmar sesiones.
-- `DATABASE_URL`: URL de conexión SQLAlchemy.
-- `COOKIE_SECURE=true`: activa cookies Secure cuando se sirve mediante HTTPS.
-- `TRUSTED_PROXY_COUNT`: número de proxies inversos de confianza, si procede.
-- `DASHBOARD_USERNAME` y `DASHBOARD_PASSWORD`: credenciales del dashboard. Sin ambas variables, las rutas de analítica permanecen deshabilitadas.
+| Variable | Purpose |
+|---|---|
+| `SESSION_SECRET` | Secreto persistente para firmar sesiones |
+| `DATABASE_URL` | Cadena de conexión SQLAlchemy |
+| `COOKIE_SECURE` | Activa cookies Secure bajo HTTPS |
+| `TRUSTED_PROXY_COUNT` | Número real de proxies inversos de confianza |
+| `DASHBOARD_USERNAME` | Usuario del dashboard |
+| `DASHBOARD_PASSWORD` | Contraseña del dashboard |
 
-No uses el servidor de desarrollo en producción. Utiliza Gunicorn detrás de un proxy HTTPS y configura explícitamente los proxies de confianza.
+Utiliza Gunicorn detrás de un proxy HTTPS en despliegues reales. No utilices el servidor de desarrollo de Flask en producción.
 
-## GitHub Pages y backend
+## Project layout
 
-GitHub Pages solo publica la página estática de presentación del proyecto. No ejecuta Flask, Python ni PostgreSQL. Para utilizar el chat necesitas desplegar el backend en un servicio compatible con Python y configurar la base de datos.
+| Component | Purpose |
+|---|---|
+| `app.py` | Creación y configuración de Flask |
+| `main.py` | Entrada de desarrollo |
+| `routes.py` | Rutas y API |
+| `models.py` | Modelos SQLAlchemy |
+| `bots.py` | Respuestas heurísticas |
+| `keywords.py` | Análisis de términos y puntuación |
+| `templates/` · `static/` | Interfaz web |
 
-En un despliegue HTTPS configura `SESSION_SECRET` con un valor aleatorio persistente y conserva `COOKIE_SECURE=true`. Para desarrollo local por HTTP puedes establecer `COOKIE_SECURE=false`. Si utilizas un proxy inverso, configura `TRUSTED_PROXY_COUNT` únicamente con el número real de proxies de confianza. El servidor de desarrollo `python main.py` no debe utilizarse en producción; el comando de despliegue utiliza Gunicorn.
+## Scope & limitations
 
-## Alcance y limitaciones
+Es un prototipo de investigación, no un ATS ni una herramienta de selección lista para producción. La puntuación se basa en coincidencias de palabras clave y no mide de forma objetiva la competencia. Los bots no utilizan un modelo de IA.
 
-- La puntuación se basa en coincidencias de palabras clave; no es una evaluación objetiva de competencia ni una decisión automatizada de contratación.
-- Las respuestas de los bots son heurísticas y no utilizan un modelo de IA.
-- La aplicación crea las tablas al iniciar mediante `create_all`; para un uso prolongado conviene incorporar migraciones versionadas.
-- El dashboard contiene información agregada y actividad de usuarios; mantenlo protegido y aplica retención de datos y controles de privacidad adecuados.
-- No introduzcas datos personales reales en una demo pública.
+No debe utilizarse como criterio automático de contratación. No introduzcas CV ni datos personales reales en una demo pública. El dashboard debe mantenerse protegido y los datos locales deben someterse a controles de acceso, retención y privacidad.
 
-## Estructura
+## Deployment
 
-- `app.py`: creación y configuración de Flask.
-- `main.py`: entrada para desarrollo local.
-- `routes.py`: vistas y API.
-- `models.py`: modelos SQLAlchemy.
-- `bots.py`: bots heurísticos.
-- `keywords.py`: análisis de términos y puntuación.
-- `templates/` y `static/`: interfaz web.
+El workflow `.github/workflows/static.yml` publica la ficha estática del proyecto en GitHub Pages. El backend Flask y la base de datos necesitan un servicio compatible independiente.
 
-## Licencia
+## License
 
-MIT. Consulta [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
