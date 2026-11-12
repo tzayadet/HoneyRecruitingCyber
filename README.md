@@ -1,5 +1,7 @@
 # HoneyRecruiting Cyber Assessment Lab
 
+[![GitHub Pages](https://github.com/tzayadet/HoneyRecruitingCyber/actions/workflows/static.yml/badge.svg)](https://github.com/tzayadet/HoneyRecruitingCyber/actions/workflows/static.yml)
+
 **Repository:** HoneyRecruitingCyber
 
 Prototipo de laboratorio para explorar evaluación técnica de conocimientos de ciberseguridad mediante una interfaz conversacional, bots basados en reglas, detección de términos y puntuación orientativa.
