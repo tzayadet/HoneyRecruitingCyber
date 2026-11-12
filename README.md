@@ -1,83 +1,85 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/CYBERSECURITY-HONEYRECRUITING-101010?style=for-the-badge&labelColor=050805&color=00FF41" alt="HoneyRecruiting Cyber"/>
-  <img src="https://img.shields.io/badge/FLASK-PYTHON-101010?style=for-the-badge&logo=flask&logoColor=00FF41" alt="Flask"/>
-</p>
-
 # HoneyRecruiting Cyber
 
-Laboratorio experimental que explora la evaluación técnica de perfiles de ciberseguridad mediante conversaciones guiadas, bots heurísticos y análisis orientativo de términos técnicos.
+An experimental lab exploring technical profile assessment through guided conversations, rule-based bots and keyword-based analysis.
 
 <p align="center">
-  <a href="https://tzayadet.github.io/HoneyRecruitingCyber/"><strong>PROJECT SHOWCASE ↗</strong></a> ·
-  <a href="https://github.com/tzayadet/HoneyRecruitingCyber"><strong>SOURCE CODE</strong></a>
+  <a href="https://tzayadet.github.io/HoneyRecruitingCyber/"><img src="https://img.shields.io/badge/PROJECT_SHOWCASE-OPEN-00a86b?style=flat-square" alt="Project showcase"></a>
+  <a href="https://github.com/tzayadet/HoneyRecruitingCyber"><img src="https://img.shields.io/badge/SOURCE-GITHUB-161b22?style=flat-square&logo=github" alt="Source"></a>
 </p>
 
-[![GitHub Pages](https://github.com/tzayadet/HoneyRecruitingCyber/actions/workflows/static.yml/badge.svg)](https://github.com/tzayadet/HoneyRecruitingCyber/actions/workflows/static.yml)
+[![Static deployment](https://github.com/tzayadet/HoneyRecruitingCyber/actions/workflows/static.yml/badge.svg)](https://github.com/tzayadet/HoneyRecruitingCyber/actions/workflows/static.yml)
 
-> Pages publica una ficha estática del proyecto. La aplicación Flask requiere un backend Python y una base de datos; no se ejecuta en GitHub Pages.
+> GitHub Pages publishes a static project overview. The Flask application requires a Python backend and database; it does not run on Pages.
 
 ## What it does
 
-- Interfaz conversacional para explorar perfiles técnicos.
-- Bots basados en reglas y respuestas heurísticas.
-- Clasificación orientativa mediante palabras clave.
-- Historial de conversación asociado a sesiones.
-- Persistencia con Flask-SQLAlchemy.
-- Dashboard analítico con autenticación HTTP Basic.
+- Conversational interface for exploring technical profiles.
+- Rule-based bots and heuristic responses.
+- Keyword-based classification and indicative scoring.
+- Session-linked conversation history.
+- Flask-SQLAlchemy persistence.
+- Dashboard protected by HTTP Basic authentication.
 
 ## Run locally
 
-**Requirements:** Python 3.11+.
+**Requirements:** Python 3.11 or later.
 
 ```bash
 python -m venv .venv
-# Windows
-.venv\Scripts\activate
-# Linux / macOS
-source .venv/bin/activate
+```
 
-pip install .
+**Windows PowerShell**
+```powershell
+.venv\Scripts\Activate.ps1
+python -m pip install .
 python main.py
 ```
 
-La aplicación de desarrollo se inicia en `http://127.0.0.1:5000`. Para despliegues compartidos se contempla PostgreSQL; SQLite puede utilizarse en desarrollo.
+**Linux / macOS**
+```bash
+source .venv/bin/activate
+python -m pip install .
+python main.py
+```
+
+The development server starts at `http://127.0.0.1:5000`. PostgreSQL is intended for shared deployments; SQLite can be used for development.
 
 ## Configuration
 
-Configura las variables de entorno antes de desplegar:
+Set deployment secrets through environment variables, not source files.
 
 | Variable | Purpose |
 |---|---|
-| `SESSION_SECRET` | Secreto persistente para firmar sesiones |
-| `DATABASE_URL` | Cadena de conexión SQLAlchemy |
-| `COOKIE_SECURE` | Activa cookies Secure bajo HTTPS |
-| `TRUSTED_PROXY_COUNT` | Número real de proxies inversos de confianza |
-| `DASHBOARD_USERNAME` | Usuario del dashboard |
-| `DASHBOARD_PASSWORD` | Contraseña del dashboard |
+| `SESSION_SECRET` | Persistent session-signing secret |
+| `DATABASE_URL` | SQLAlchemy database URL |
+| `COOKIE_SECURE` | Enables Secure cookies under HTTPS |
+| `TRUSTED_PROXY_COUNT` | Number of trusted reverse proxies |
+| `DASHBOARD_USERNAME` | Dashboard username |
+| `DASHBOARD_PASSWORD` | Dashboard password |
 
-Utiliza Gunicorn detrás de un proxy HTTPS en despliegues reales. No utilices el servidor de desarrollo de Flask en producción.
+Use Gunicorn behind an HTTPS reverse proxy for shared deployments. Do not use Flask's development server in production.
 
-## Project layout
+## Project structure
 
 | Component | Purpose |
 |---|---|
-| `app.py` | Creación y configuración de Flask |
-| `main.py` | Entrada de desarrollo |
-| `routes.py` | Rutas y API |
-| `models.py` | Modelos SQLAlchemy |
-| `bots.py` | Respuestas heurísticas |
-| `keywords.py` | Análisis de términos y puntuación |
-| `templates/` · `static/` | Interfaz web |
+| `app.py` | Flask application factory and configuration |
+| `main.py` | Development entry point |
+| `routes.py` | Routes and API |
+| `models.py` | SQLAlchemy models |
+| `bots.py` | Heuristic responses |
+| `keywords.py` | Keyword analysis and scoring |
+| `templates/`, `static/` | Web interface |
 
-## Scope & limitations
+## Scope and limitations
 
-Es un prototipo de investigación, no un ATS ni una herramienta de selección lista para producción. La puntuación se basa en coincidencias de palabras clave y no mide de forma objetiva la competencia. Los bots no utilizan un modelo de IA.
+This is a research prototype, not a production ATS or validated assessment system. Scoring is based on keyword matches and does not objectively measure competence. The bots use rules and heuristics, not a generative AI model.
 
-No debe utilizarse como criterio automático de contratación. No introduzcas CV ni datos personales reales en una demo pública. El dashboard debe mantenerse protegido y los datos locales deben someterse a controles de acceso, retención y privacidad.
+Do not use its scores as an automated hiring decision. Do not enter real CVs or candidate personal data into a public demo. A shared deployment requires access controls, retention policies, privacy review and security testing.
 
 ## Deployment
 
-El workflow `.github/workflows/static.yml` publica la ficha estática del proyecto en GitHub Pages. El backend Flask y la base de datos necesitan un servicio compatible independiente.
+The `.github/workflows/static.yml` workflow publishes the static project overview to GitHub Pages. The Flask backend and database require a separate hosting environment.
 
 ## License
 
