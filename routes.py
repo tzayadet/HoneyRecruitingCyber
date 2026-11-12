@@ -1,6 +1,8 @@
 import os
+import hmac
+from functools import wraps
 from datetime import datetime
-from flask import render_template, request, jsonify, session
+from flask import render_template, request, jsonify, session, Response
 from app import app, db
 from models import User, Message, KeywordDetection, BotActivity
 from bots import BotManager
@@ -11,6 +13,35 @@ import logging
 # Initialize bot manager
 bot_manager = BotManager()
 
+
+def admin_required(view):
+    """Protect analytics endpoints with HTTP Basic Auth.
+
+    Configure DASHBOARD_USERNAME and DASHBOARD_PASSWORD. If either is absent,
+    the analytics dashboard stays disabled instead of exposing user data.
+    """
+    @wraps(view)
+    def wrapped(*args, **kwargs):
+        expected_user = os.environ.get("DASHBOARD_USERNAME")
+        expected_password = os.environ.get("DASHBOARD_PASSWORD")
+        if not expected_user or not expected_password:
+            return jsonify({"error": "Dashboard is disabled"}), 404
+
+        auth = request.authorization
+        valid = (
+            auth is not None
+            and hmac.compare_digest(auth.username or "", expected_user)
+            and hmac.compare_digest(auth.password or "", expected_password)
+        )
+        if not valid:
+            return Response(
+                "Authentication required",
+                401,
+                {"WWW-Authenticate": 'Basic realm="HoneyRecruiting analytics"'},
+            )
+        return view(*args, **kwargs)
+    return wrapped
+
 @app.route('/')
 def index():
     """Main chat interface"""
@@ -19,7 +50,7 @@ def index():
         session['session_id'] = str(uuid.uuid4())
     
     # Get or create user
-    user = User.query.filter_by(session_id=session['session_id']).first()
+    user = User.query.filter_by(session_id=session.get('session_id')).first()
     if not user:
         # Create anonymous user
         username = f"user_{session['session_id'][:8]}"
@@ -40,6 +71,7 @@ def index():
     return render_template('index.html', user=user, bots=bots)
 
 @app.route('/dashboard')
+@admin_required
 def dashboard():
     """Analytics dashboard"""
     # Get statistics
@@ -85,15 +117,30 @@ def dashboard():
 def send_message():
     """Handle user message and bot response"""
     try:
-        data = request.get_json()
-        user_message = data.get('message', '').strip()
-        bot_name = data.get('bot', 'SecurityExpert')
-        
+        data = request.get_json(silent=True)
+        if not isinstance(data, dict):
+            return jsonify({'error': 'A JSON object is required'}), 400
+
+        user_message = data.get('message', '')
+        if not isinstance(user_message, str):
+            return jsonify({'error': 'Message must be text'}), 400
+        user_message = user_message.strip()
         if not user_message:
             return jsonify({'error': 'Message cannot be empty'}), 400
-        
+        if len(user_message) > 4000:
+            return jsonify({'error': 'Message exceeds the 4000-character limit'}), 413
+
+        available_bots = bot_manager.get_all_bot_names()
+        bot_name = data.get('bot') or (available_bots[0] if available_bots else 'SecurityExpert')
+        if bot_name not in available_bots:
+            return jsonify({'error': 'Unknown bot'}), 400
+
+        session_id = session.get('session_id')
+        if not session_id:
+            return jsonify({'error': 'Open the chat page before sending a message'}), 400
+
         # Get user
-        user = User.query.filter_by(session_id=session['session_id']).first()
+        user = User.query.filter_by(session_id=session_id).first()
         if not user:
             return jsonify({'error': 'User not found'}), 404
         
@@ -205,6 +252,7 @@ def get_chat_history():
         return jsonify({'error': 'Internal server error'}), 500
 
 @app.route('/api/dashboard_data')
+@admin_required
 def get_dashboard_data():
     """Get dashboard data for charts"""
     try:
