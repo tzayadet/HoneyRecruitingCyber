@@ -1,6 +1,8 @@
-# Honey Recruiting Cyber
+# HoneyRecruiting Cyber Assessment Lab
 
-Prototipo de evaluación técnica de conocimientos de ciberseguridad mediante una interfaz de chat, bots basados en reglas, detección de términos y puntuación orientativa.
+**Repository:** HoneyRecruitingCyber
+
+Prototipo de laboratorio para explorar evaluación técnica de conocimientos de ciberseguridad mediante una interfaz conversacional, bots basados en reglas, detección de términos y puntuación orientativa.
 
 **Página pública del proyecto:** https://tzayadet.github.io/HoneyRecruitingCyber/  
 Esta página de GitHub Pages es una ficha de presentación estática. La aplicación Flask requiere ejecución de backend independiente y no funciona dentro de GitHub Pages.
