@@ -40,9 +40,11 @@ Define estas variables antes de un despliegue:
 
 No uses el servidor de desarrollo en producción. Utiliza Gunicorn detrás de un proxy HTTPS y configura explícitamente los proxies de confianza.
 
-## GitHub Pages
+## GitHub Pages y backend
 
 GitHub Pages solo publica la página estática de presentación del proyecto. No ejecuta Flask, Python ni PostgreSQL. Para utilizar el chat necesitas desplegar el backend en un servicio compatible con Python y configurar la base de datos.
+
+En un despliegue HTTPS configura `SESSION_SECRET` con un valor aleatorio persistente y conserva `COOKIE_SECURE=true`. Para desarrollo local por HTTP puedes establecer `COOKIE_SECURE=false`. Si utilizas un proxy inverso, configura `TRUSTED_PROXY_COUNT` únicamente con el número real de proxies de confianza. El servidor de desarrollo `python main.py` no debe utilizarse en producción; el comando de despliegue utiliza Gunicorn.
 
 ## Alcance y limitaciones
 
