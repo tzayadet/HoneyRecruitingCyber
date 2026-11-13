@@ -3,8 +3,13 @@
 An experimental lab exploring technical profile assessment through guided conversations, rule-based bots and keyword-based analysis.
 
 <p align="center">
-  <a href="https://tzayadet.github.io/HoneyRecruitingCyber/"><img src="https://img.shields.io/badge/PROJECT_SHOWCASE-OPEN-00a86b?style=flat-square" alt="Project showcase"></a>
-  <a href="https://github.com/tzayadet/HoneyRecruitingCyber"><img src="https://img.shields.io/badge/SOURCE-GITHUB-161b22?style=flat-square&logo=github" alt="Source"></a>
+  <img src="https://img.shields.io/badge/HR_TECH-HONEY_RECRUITING_CYBER-101010?style=for-the-badge&labelColor=050805&color=00FF41" alt="HoneyRecruiting Cyber"/>
+  <img src="https://img.shields.io/badge/PYTHON-FLASK-101010?style=for-the-badge&logo=python&logoColor=00FF41" alt="Python and Flask"/>
+</p>
+
+<p align="center">
+  <a href="https://tzayadet.github.io/HoneyRecruitingCyber/"><strong>LIVE DEMO ↗</strong></a> ·
+  <a href="https://github.com/tzayadet/HoneyRecruitingCyber"><strong>SOURCE CODE</strong></a>
 </p>
 
 [![Static deployment](https://github.com/tzayadet/HoneyRecruitingCyber/actions/workflows/static.yml/badge.svg)](https://github.com/tzayadet/HoneyRecruitingCyber/actions/workflows/static.yml)
